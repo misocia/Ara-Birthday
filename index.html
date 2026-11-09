@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 25th Birthday, Ara! 🌸✨</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        softpink: '#FFD1DC',
+                        lightpink: '#FFF0F5',
+                        hotpink: '#FF85A1',
+                        pastelpurple: '#E6E6FA',
+                        pastelyellow: '#FFFACD',
+                        pastelblue: '#E0F7FA',
+                        pastelgreen: '#E0F8E9',
+                        pastelcoral: '#FFDAB9'
+                    },
+                    fontFamily: {
+                        pacifico: ['Pacifico', 'cursive'],
+                        fredoka: ['Fredoka', 'sans-serif'],
+                        quicksand: ['Quicksand', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, #FFF0F5 0%, #FFD1DC 40%, #E6E6FA 70%, #FFFACD 100%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Custom Floating Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-18px) rotate(3deg); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(-4deg); }
+        }
+        .animate-float-slow {
+            animation: float-slow 7s ease-in-out infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-1deg); opacity: 1; }
+            50% { transform: scale(1.15) rotate(2deg); opacity: 0.85; }
+        }
+        .animate-flicker {
+            animation: flicker 0.6s ease-in-out infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        @keyframes smoke {
+            0% { opacity: 0.8; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(2.5); }
+        }
+        .smoke-puff {
+            animation: smoke 1.5s ease-out forwards;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF85A1;
+            border-radius: 20px;
+        }
+
+        /* 3D Flip Card Effect */
+        .perspective {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+        .flipped {
+            transform: rotateY(180deg);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Glassmorphism Styling */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(255, 133, 161, 0.15);
+        }
+
+        /* Floating Heart Styling */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 60;
+            animation: floatUp 3.5s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            50% { opacity: 0.9; }
+            100% { transform: translateY(-100vh) scale(1.4) rotate(20deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body class="relative text-gray-700 min-h-screen">
+
+    <!-- Canvas Background Layer for Confetti -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+    <!-- Floating Decorative Background Balloons & Stars -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-10 left-5 text-4xl sm:text-6xl animate-float opacity-80">🎈</div>
+        <div class="absolute top-1/4 right-8 text-5xl sm:text-7xl animate-float-slow opacity-80" style="animation-delay: 1s;">🎁</div>
+        <div class="absolute top-1/2 left-10 text-4xl sm:text-6xl animate-float opacity-70" style="animation-delay: 2s;">🎀</div>
+        <div class="absolute bottom-20 right-10 text-5xl sm:text-7xl animate-float-slow opacity-80" style="animation-delay: 1.5s;">🎈</div>
+        <div class="absolute bottom-10 left-12 text-4xl sm:text-6xl animate-float opacity-75" style="animation-delay: 0.5s;">✨</div>
+        
+        <i class="fa-solid fa-sparkles absolute top-20 right-1/4 text-yellow-300 text-2xl animate-pulse"></i>
+        <i class="fa-solid fa-star absolute top-1/3 left-1/3 text-pink-300 text-xl animate-bounce"></i>
+        <i class="fa-solid fa-heart absolute bottom-1/3 right-1/3 text-purple-300 text-2xl animate-pulse"></i>
+    </div>
+
+    <!-- Floating Audio & Action Controls -->
+    <div class="fixed top-4 right-4 z-40 flex items-center space-x-2 sm:space-x-3">
+        <button id="send-hugs-btn" class="glass-card hover:bg-white text-rose-500 hover:text-rose-600 font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-full flex items-center shadow-lg transition duration-300 transform active:scale-95 text-xs sm:text-sm">
+            <i class="fa-solid fa-heart-pulse mr-2 text-rose-400 animate-pulse"></i>
+            <span>Send Hugs & Love 💖</span>
+        </button>
+        <button id="music-toggle-btn" class="glass-card hover:bg-white text-pink-500 hover:text-pink-600 font-bold px-3 py-2 sm:px-4 sm:py-2.5 rounded-full flex items-center shadow-lg transition duration-300 transform active:scale-95 text-xs sm:text-sm">
+            <i id="music-icon" class="fa-solid fa-music mr-2 text-base"></i>
+            <span id="music-text">Play BGM 🎵</span>
+        </button>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="relative z-10 max-w-5xl mx-auto px-4 py-8 sm:py-12 space-y-16 sm:space-y-24">
+
+        <!-- HERO HEADER SECTION -->
+        <section class="text-center pt-8 sm:pt-12">
+            <div class="inline-block bg-white/80 border-2 border-pink-300 text-pink-500 font-fredoka font-bold text-xs sm:text-sm px-6 py-2 rounded-full shadow-md mb-4 tracking-wider animate-bounce">
+                🎉 QUARTER-CENTURY CLUB • LEVEL 25 UNLOCKED ✨
+            </div>
+            
+            <h1 class="font-pacifico text-4xl sm:text-6xl md:text-7xl text-pink-500 drop-shadow-md mb-4 leading-tight">
+                Happy 25th Birthday, <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-rose-400">Ara!</span> ✨🎉
+            </h1>
+            
+            <p class="font-fredoka text-gray-600 text-lg sm:text-2xl max-w-2xl mx-auto font-medium">
+                25 Years of Magic, Bright Smiles & Pure Sunshine! 💖
+            </p>
+
+            <div class="mt-6 flex flex-wrap justify-center gap-3 text-xs sm:text-sm font-semibold">
+                <span class="bg-pink-100 text-pink-600 px-3.5 py-1.5 rounded-full border border-pink-200">#AraTurns25 🎂</span>
+                <span class="bg-purple-100 text-purple-600 px-3.5 py-1.5 rounded-full border border-purple-200">#BestFriendsForever 👭</span>
+                <span class="bg-yellow-100 text-yellow-700 px-3.5 py-1.5 rounded-full border border-yellow-200">#ShineBrightAra ✨</span>
+            </div>
+        </section>
+
+        <!-- INTERACTIVE BIRTHDAY CAKE SECTION -->
+        <section class="glass-card rounded-3xl p-6 sm:p-10 text-center relative overflow-hidden shadow-2xl border-2 border-pink-200">
+            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-pink-400 via-purple-400 to-yellow-300"></div>
+
+            <h2 class="font-fredoka text-2xl sm:text-3xl text-pink-600 mb-2 font-bold">
+                🎂 Ara's Special 25th Birthday Cake
+            </h2>
+            <p class="text-gray-500 text-sm sm:text-base mb-6">
+                Make your secret wish first, then tap the button to blow out your candles! ✨
+            </p>
+
+            <!-- SVG 3-Tier Birthday Cake Container -->
+            <div class="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto flex items-center justify-center">
+                <!-- Smoke Particles Container -->
+                <div id="smoke-container" class="absolute top-10 inset-x-0 flex justify-center pointer-events-none opacity-0 transition-opacity">
+                    <div class="w-4 h-4 bg-gray-300/60 rounded-full smoke-puff mx-1"></div>
+                    <div class="w-6 h-6 bg-gray-300/50 rounded-full smoke-puff mx-2" style="animation-delay: 0.2s;"></div>
+                    <div class="w-5 h-5 bg-gray-300/60 rounded-full smoke-puff mx-1" style="animation-delay: 0.4s;"></div>
+                </div>
+
+                <svg viewBox="0 0 300 300" class="w-full h-full drop-shadow-xl">
+                    <!-- Cake Plate -->
+                    <ellipse cx="150" cy="270" rx="120" ry="18" fill="#E2E8F0" />
+                    <ellipse cx="150" cy="265" rx="115" ry="15" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+
+                    <!-- Tier 1 (Bottom - Soft Pink with Cream Drips) -->
+                    <path d="M 50,210 L 50,250 Q 150,275 250,250 L 250,210 Z" fill="#FFB6C1" />
+                    <path d="M 50,210 Q 70,225 90,210 Q 110,230 130,210 Q 150,235 170,210 Q 190,225 210,210 Q 230,230 250,210 L 250,205 L 50,205 Z" fill="#FFFFFF" />
+
+                    <!-- Tier 2 (Middle - Lavender Pastel) -->
+                    <path d="M 75,150 L 75,205 Q 150,225 225,205 L 225,150 Z" fill="#E6E6FA" />
+                    <path d="M 75,200 Q 150,220 225,200" fill="none" stroke="#FF85A1" stroke-width="4" stroke-dasharray="8,6" />
+                    <path d="M 75,150 Q 100,165 125,150 Q 150,170 175,150 Q 200,165 225,150 L 225,145 L 75,145 Z" fill="#FFF0F5" />
+
+                    <!-- Tier 3 (Top - Strawberry Cream) -->
+                    <path d="M 100,100 L 100,145 Q 150,160 200,145 L 200,100 Z" fill="#FFD1DC" />
+                    <ellipse cx="150" cy="100" rx="50" ry="10" fill="#FFF0F5" />
+
+                    <!-- Strawberries on Top -->
+                    <circle cx="110" cy="96" r="7" fill="#FF4757" />
+                    <circle cx="190" cy="96" r="7" fill="#FF4757" />
+
+                    <!-- CANDLE NUMBER 25 -->
+                    <rect x="133" y="65" width="10" height="35" rx="3" fill="#FFFACD" stroke="#FDE047" stroke-width="1.5"/>
+                    <rect x="157" y="65" width="10" height="35" rx="3" fill="#FFFACD" stroke="#FDE047" stroke-width="1.5"/>
+
+                    <text x="138" y="88" font-family="Fredoka" font-size="24" font-weight="bold" fill="#FF527B" text-anchor="middle">2</text>
+                    <text x="162" y="88" font-family="Fredoka" font-size="24" font-weight="bold" fill="#FF527B" text-anchor="middle">5</text>
+
+                    <line x1="138" y1="65" x2="138" y2="55" stroke="#475569" stroke-width="2" />
+                    <line x1="162" y1="65" x2="162" y2="55" stroke="#475569" stroke-width="2" />
+
+                    <!-- CANDLE FLAMES -->
+                    <g id="candle-flames">
+                        <g class="animate-flicker">
+                            <path d="M 138,35 Q 145,45 138,56 Q 131,45 138,35 Z" fill="#FF9F43" />
+                            <path d="M 138,40 Q 142,47 138,54 Q 134,47 138,40 Z" fill="#FECA57" />
+                            <circle cx="138" cy="50" r="2.5" fill="#FFFFFF" />
+                        </g>
+                        <g class="animate-flicker" style="animation-delay: 0.3s;">
+                            <path d="M 162,35 Q 169,45 162,56 Q 155,45 162,35 Z" fill="#FF9F43" />
+                            <path d="M 162,40 Q 166,47 162,54 Q 158,47 162,40 Z" fill="#FECA57" />
+                            <circle cx="162" cy="50" r="2.5" fill="#FFFFFF" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Blow Candles Button -->
+            <div class="mt-6 flex flex-col items-center">
+                <button id="blow-candle-btn" class="bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 text-white font-fredoka font-bold text-lg px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 active:translate-y-0 flex items-center space-x-3 border-2 border-white">
+                    <span>Make a Wish & Blow Candles 🎂✨</span>
+                </button>
+                <div id="candle-status-msg" class="mt-3 text-sm font-semibold text-pink-600 hidden animate-pulse">
+                    🎉 Yay! Candles are blown! May all your 25th birthday wishes come true! ✨
+                </div>
+            </div>
+        </section>
+
+        <!-- POP-UP BIRTHDAY LETTER SECTION -->
+        <section class="text-center">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xl">
+                <div class="max-w-xl mx-auto space-y-4">
+                    <div class="w-16 h-16 bg-pink-100 text-pink-500 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner animate-pulse">
+                        💌
+                    </div>
+                    <h2 class="font-fredoka text-2xl sm:text-3xl text-gray-800 font-bold">
+                        A Birthday Letter For Ara
+                    </h2>
+                    <p class="text-gray-600 text-sm sm:text-base">
+                        A heartfelt message from your best friend to celebrate your 25th milestone year...
+                    </p>
+                    <button id="open-letter-btn" class="bg-white hover:bg-pink-50 text-pink-600 font-fredoka font-bold px-8 py-3.5 rounded-full shadow-md hover:shadow-lg border-2 border-pink-300 transition duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
+                        <i class="fa-solid fa-envelope-open-text text-lg"></i>
+                        <span>Read My Letter to You 💌</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODAL POPUP LETTER -->
+        <div id="letter-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+            <div id="letter-modal-content" class="bg-gradient-to-b from-white to-pink-50 rounded-3xl max-w-2xl w-full p-6 sm:p-10 shadow-2xl border-4 border-pink-200 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+                <button id="close-letter-btn" class="absolute top-4 right-4 w-10 h-10 bg-pink-100 hover:bg-pink-200 text-pink-600 rounded-full flex items-center justify-center text-xl transition font-bold">
+                    ✕
+                </button>
+
+                <div class="text-center mb-6">
+                    <span class="text-xs font-bold tracking-widest text-pink-400 uppercase">A Special Birthday Letter</span>
+                    <h3 class="font-pacifico text-3xl sm:text-4xl text-pink-500 mt-1">Dearest Ara 🌸</h3>
+                </div>
+
+                <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                    <p>
+                        <b>Happy 25th Birthday, my absolute favorite human! 🎉✨</b> Welcome to your official quarter-century milestone—and let me tell you, 25 has never looked so beautiful.
+                    </p>
+                    <p>
+                        Looking back at all our shared memories, late-night talks, uncontrollable giggles, and quiet moments of support, I am beyond grateful to walk through life with you as my best friend. You bring so much light, warmth, and genuine kindness everywhere you go.
+                    </p>
+                    <p>
+                        As you step into this milestone year, remember how incredibly strong, talented, resilient, and deeply loved you are. Whenever life feels overwhelming, never forget how far you've come and how bright your spirit is.
+                    </p>
+                    <p>
+                        May your 25th year bring you unshakeable peace, wild courage to chase your biggest dreams, financial abundance, and endless reasons to smile.
+                    </p>
+                    <p class="font-pacifico text-pink-500 text-lg sm:text-xl text-right pt-2">
+                        Forever your best friend, 💕✨
+                    </p>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button id="close-letter-bottom-btn" class="bg-pink-500 hover:bg-pink-600 text-white font-fredoka font-bold px-8 py-3 rounded-full shadow-md transition">
+                        Sending Big Hugs & Close Letter 💖
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 25 WISHES FOR 25 YEARS GRID SECTION -->
+        <section class="space-y-8">
+            <div class="text-center space-y-2">
+                <span class="bg-purple-100 text-purple-600 text-xs font-bold px-4 py-1.5 rounded-full border border-purple-200">
+                    25 WISHES FOR 25 YEARS 🌟
+                </span>
+                <h2 class="font-fredoka text-3xl sm:text-4xl text-gray-800 font-bold">
+                    25 Heartfelt Wishes for Ara's 25th Year
+                </h2>
+                <p class="text-gray-500 text-sm sm:text-base max-w-xl mx-auto">
+                    Click or tap each magic card below to unlock a special birthday wish for your 25th chapter! 🎁✨
+                </p>
+            </div>
+
+            <!-- Grid of 25 Interactive Flip Cards -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4" id="wishes-grid">
+                <!-- Dynamically populated via JS -->
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center space-y-4 pt-10 border-t-2 border-pink-200/60">
+            <div class="font-pacifico text-2xl text-pink-500">
+                Happy 25th Birthday, Ara! 🥂✨
+            </div>
+            <p class="text-xs sm:text-sm text-gray-500">
+                Crafted with endless love & warm wishes by your Best Friend. ♡
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // 25 Wishes Data Array in English
+        const wishesData = [
+            { id: 1, title: "Endless Joy", desc: "May your heart overflow with laughter every single day.", icon: "😊", bg: "from-pink-100 to-pink-200" },
+            { id: 2, title: "Vibrant Health", desc: "Wishing you boundless energy, wellness, and vitality.", icon: "🌿", bg: "from-green-100 to-emerald-200" },
+            { id: 3, title: "Unshakeable Peace", desc: "May your mind stay calm and serene amidst any storm.", icon: "🧘‍♀️", bg: "from-purple-100 to-indigo-200" },
+            { id: 4, title: "Courage to Dream", desc: "Never hesitate to chase the biggest, wildest dreams.", icon: "🚀", bg: "from-blue-100 to-cyan-200" },
+            { id: 5, title: "Financial Abundance", desc: "May wealth, success, and prosperity flow effortlessly.", icon: "💰", bg: "from-yellow-100 to-amber-200" },
+            { id: 6, title: "Deep Self-Love", desc: "Always embrace how uniquely magnificent you are.", icon: "🌸", bg: "from-rose-100 to-pink-200" },
+            { id: 7, title: "Serendipitous Magic", desc: "May delightful surprises find you when least expected.", icon: "✨", bg: "from-purple-100 to-pink-200" },
+            { id: 8, title: "Grand Adventures", desc: "Here's to exploring beautiful new places and horizons.", icon: "✈️", bg: "from-teal-100 to-sky-200" },
+            { id: 9, title: "Warm Connections", desc: "May you always be surrounded by genuine, loving souls.", icon: "🫂", bg: "from-orange-100 to-amber-200" },
+            { id: 10, title: "Creative Spark", desc: "May your passions and artistic ideas bloom brilliantly.", icon: "🎨", bg: "from-fuchsia-100 to-pink-200" },
+            { id: 11, title: "Career Triumphs", desc: "Celebrate big breakthroughs and earned recognition.", icon: "🏆", bg: "from-yellow-100 to-amber-300" },
+            { id: 12, title: "Cozy Moments", desc: "Warm coffee, peaceful rain, and soft relaxation.", icon: "☕", bg: "from-amber-100 to-orange-200" },
+            { id: 13, title: "Unwavering Confidence", desc: "Walk boldly into every room knowing your true worth.", icon: "👑", bg: "from-purple-100 to-fuchsia-200" },
+            { id: 14, title: "Sweet Miracles", desc: "May life shower you with quiet, breathtaking miracles.", icon: "🌈", bg: "from-pink-100 to-purple-200" },
+            { id: 15, title: "Delicious Treats", desc: "Endless good food, desserts, and guilt-free treats!", icon: "🍰", bg: "from-red-100 to-pink-200" },
+            { id: 16, title: "Sunshine on Rainy Days", desc: "Hope and brightness even during challenging times.", icon: "☀️", bg: "from-yellow-100 to-orange-200" },
+            { id: 17, title: "Peaceful Boundaries", desc: "Wisdom to protect your heart and prioritize your peace.", icon: "🛡️", bg: "from-sky-100 to-indigo-200" },
+            { id: 18, title: "Reasons to Smile", desc: "At least 100 little reasons to smile each day.", icon: "💖", bg: "from-rose-100 to-pink-300" },
+            { id: 19, title: "Endless Inspiration", desc: "May everyday moments ignite your spirit with joy.", icon: "💡", bg: "from-yellow-100 to-lime-200" },
+            { id: 20, title: "True Happiness", desc: "A deep, enduring contentment in all that you do.", icon: "🌟", bg: "from-amber-100 to-yellow-200" },
+            { id: 21, title: "Graceful Growth", desc: "Evolving into the best version of yourself with ease.", icon: "🌱", bg: "from-emerald-100 to-teal-200" },
+            { id: 22, title: "Soulful Harmony", desc: "Alignment between your heart, mind, and soul.", icon: "🕊️", bg: "from-indigo-100 to-purple-200" },
+            { id: 23, title: "Unexpected Blessings", desc: "Doors opening smoothly in unexpected ways.", icon: "🎁", bg: "from-pink-100 to-rose-200" },
+            { id: 24, title: "Sweet Dreams Fulfilled", desc: "May your nighttime wishes become daytime reality.", icon: "🌌", bg: "from-violet-100 to-purple-300" },
+            { id: 25, title: "Best Friends Forever", desc: "My promise to walk beside you through it all!", icon: "👭", bg: "from-pink-200 to-purple-200" }
+        ];
+
+        // Populate Wishes Grid
+        const wishesGrid = document.getElementById('wishes-grid');
+        wishesData.forEach(wish => {
+            const cardWrapper = document.createElement('div');
+            cardWrapper.className = 'perspective h-40 cursor-pointer select-none';
+            cardWrapper.innerHTML = `
+                <div class="card-inner relative w-full h-full transform-style-3d text-center">
+                    <!-- Front Side -->
+                    <div class="absolute inset-0 w-full h-full glass-card rounded-2xl flex flex-col items-center justify-center p-3 border-2 border-pink-200 backface-hidden shadow-sm hover:border-pink-400 transition">
+                        <span class="text-xs font-bold text-pink-400 font-fredoka">WISH #${wish.id}</span>
+                        <span class="text-3xl my-1.5">${wish.icon}</span>
+                        <span class="text-xs font-bold text-gray-700 font-fredoka line-clamp-1">${wish.title}</span>
+                        <span class="text-[10px] text-pink-500 mt-1 font-semibold">Tap to flip ✨</span>
+                    </div>
+                    <!-- Back Side -->
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-br ${wish.bg} rounded-2xl flex flex-col items-center justify-center p-3 rotate-y-180 backface-hidden border-2 border-white shadow-md">
+                        <span class="text-xs font-bold text-gray-800 font-fredoka mb-1">${wish.title} ${wish.icon}</span>
+                        <p class="text-[11px] text-gray-700 leading-snug font-medium">${wish.desc}</p>
+                    </div>
+                </div>
+            `;
+            
+            cardWrapper.addEventListener('click', () => {
+                const cardInner = cardWrapper.querySelector('.card-inner');
+                cardInner.classList.toggle('flipped');
+                triggerSmallConfetti(cardWrapper);
+            });
+
+            wishesGrid.appendChild(cardWrapper);
+        });
+
+        // MODAL POP-UP LOGIC
+        const openLetterBtn = document.getElementById('open-letter-btn');
+        const closeLetterBtn = document.getElementById('close-letter-btn');
+        const closeLetterBottomBtn = document.getElementById('close-letter-bottom-btn');
+        const letterModal = document.getElementById('letter-modal');
+        const letterModalContent = document.getElementById('letter-modal-content');
+
+        function openModal() {
+            letterModal.classList.remove('opacity-0', 'pointer-events-none');
+            letterModalContent.classList.remove('scale-95');
+            letterModalContent.classList.add('scale-100');
+            triggerConfettiBurst();
+        }
+
+        function closeModal() {
+            letterModal.classList.add('opacity-0', 'pointer-events-none');
+            letterModalContent.classList.remove('scale-100');
+            letterModalContent.classList.add('scale-95');
+        }
+
+        openLetterBtn.addEventListener('click', openModal);
+        closeLetterBtn.addEventListener('click', closeModal);
+        closeLetterBottomBtn.addEventListener('click', closeModal);
+        letterModal.addEventListener('click', (e) => {
+            if (e.target === letterModal) closeModal();
+        });
+
+        // BLOW CANDLE LOGIC & AUDIO SYNTHESIS
+        const blowCandleBtn = document.getElementById('blow-candle-btn');
+        const candleFlames = document.getElementById('candle-flames');
+        const smokeContainer = document.getElementById('smoke-container');
+        const candleStatusMsg = document.getElementById('candle-status-msg');
+        let candlesBlown = false;
+
+        blowCandleBtn.addEventListener('click', () => {
+            if (!candlesBlown) {
+                candleFlames.style.display = 'none';
+                smokeContainer.classList.remove('opacity-0');
+                candleStatusMsg.classList.remove('hidden');
+                candlesBlown = true;
+                blowCandleBtn.querySelector('span').innerText = 'Make Another Wish 🌟';
+                playChimeSound();
+                triggerConfettiBurst();
+            } else {
+                candleFlames.style.display = 'block';
+                smokeContainer.classList.add('opacity-0');
+                candleStatusMsg.classList.add('hidden');
+                candlesBlown = false;
+                blowCandleBtn.querySelector('span').innerText = 'Make a Wish & Blow Candles 🎂✨';
+            }
+        });
+
+        // FLOATING HEARTS EFFECT ("Send Hugs & Love")
+        const sendHugsBtn = document.getElementById('send-hugs-btn');
+        sendHugsBtn.addEventListener('click', () => {
+            const heartEmojis = ['💖', '🌸', '💕', '✨', '💗', '🎁', '🎀'];
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'floating-heart text-2xl sm:text-4xl';
+                    heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    heart.style.left = Math.random() * 90 + 5 + 'vw';
+                    heart.style.bottom = '-10px';
+                    heart.style.animationDuration = (Math.random() * 2 + 2.5) + 's';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 120);
+            }
+            playChimeSound();
+        });
+
+        // CANVAS CONFETTI SYSTEM
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        let particles = [];
+        const colors = ['#FF85A1', '#FFD1DC', '#E6E6FA', '#FFFACD', '#E0F7FA', '#FFB6C1', '#FDE047'];
+
+        function triggerConfettiBurst() {
+            for (let i = 0; i < 90; i++) {
+                particles.push({
+                    x: width / 2,
+                    y: height / 2,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 0.7) * 14,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rSpeed: (Math.random() - 0.5) * 10,
+                    life: 100
+                });
+            }
+        }
+
+        function triggerSmallConfetti(elem) {
+            const rect = elem.getBoundingClientRect();
+            const cx = rect.left + rect.width / 2;
+            const cy = rect.top + rect.height / 2;
+            for (let i = 0; i < 15; i++) {
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.7) * 6,
+                    size: Math.random() * 5 + 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rSpeed: (Math.random() - 0.5) * 8,
+                    life: 60
+                });
+            }
+        }
+
+        function renderConfetti() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach((p, idx) => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.2; // gravity
+                p.rotation += p.rSpeed;
+                p.life--;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                ctx.restore();
+
+                if (p.life <= 0 || p.y > height) {
+                    particles.splice(idx, 1);
+                }
+            });
+            requestAnimationFrame(renderConfetti);
+        }
+        renderConfetti();
+
+        // WEB AUDIO API BGM & CHIMES SYNTHESIZER
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let melodyInterval = null;
+
+        const musicToggleBtn = document.getElementById('music-toggle-btn');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playNote(freq, duration, delay = 0) {
+            if (!audioCtx) return;
+            setTimeout(() => {
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + duration);
+                } catch (e) {}
+            }, delay);
+        }
+
+        function playChimeSound() {
+            initAudio();
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            notes.forEach((n, i) => playNote(n, 0.4, i * 100));
+        }
+
+        // Happy Birthday Melody Frequencies
+        const melody = [
+            { f: 264, d: 300 }, { f: 264, d: 300 }, { f: 297, d: 500 }, { f: 264, d: 500 }, { f: 352, d: 500 }, { f: 330, d: 800 },
+            { f: 264, d: 300 }, { f: 264, d: 300 }, { f: 297, d: 500 }, { f: 264, d: 500 }, { f: 396, d: 500 }, { f: 352, d: 800 },
+            { f: 264, d: 300 }, { f: 264, d: 300 }, { f: 528, d: 500 }, { f: 440, d: 500 }, { f: 352, d: 500 }, { f: 330, d: 500 }, { f: 297, d: 800 }
+        ];
+
+        function playMelodyLoop() {
+            let delay = 0;
+            melody.forEach(note => {
+                setTimeout(() => {
+                    if (isMusicPlaying) playNote(note.f, note.d / 1000);
+                }, delay);
+                delay += note.d + 100;
+            });
+            return delay;
+        }
+
+        musicToggleBtn.addEventListener('click', () => {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isMusicPlaying = !isMusicPlaying;
+            if (isMusicPlaying) {
+                musicIcon.className = "fa-solid fa-volume-high mr-2 text-base animate-bounce";
+                musicText.innerText = "Pause BGM 🔇";
+                const totalDuration = playMelodyLoop();
+                melodyInterval = setInterval(playMelodyLoop, totalDuration + 500);
+            } else {
+                musicIcon.className = "fa-solid fa-music mr-2 text-base";
+                musicText.innerText = "Play BGM 🎵";
+                clearInterval(melodyInterval);
+            }
+        });
+    </script>
+</body>
+</html>
